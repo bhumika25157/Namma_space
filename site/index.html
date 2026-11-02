@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NammaSpace · 3D Digital Twin Viewer</title>
+<meta name="description" content="Indoor environments reconstructed in 3D (COLMAP + OpenMVS) and explorable in the browser with first-person free roaming. NammaSpace, Techfest IIT Bombay.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 14 16 4l12 10v14H4z' fill='%23ffb547'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/three.module.js",
+  "three/addons/": "./vendor/three/addons/",
+  "three-mesh-bvh": "./vendor/three-mesh-bvh.module.js",
+  "@sparkjsdev/spark": "./vendor/spark.module.js"
+} }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="loader">
+  <div class="load-card">
+    <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 14 16 4l12 10v14H4z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M11 28v-8l5-4 5 4v8" fill="currentColor" opacity=".55"/></svg>NAMMASPACE</div>
+    <div id="load-msg">Loading reconstructed room…</div>
+    <div class="bar"><span id="load-bar"></span></div>
+    <div id="load-sub" class="muted"></div>
+  </div>
+</div>
+
+<header id="title">
+  <div class="brand"><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 14 16 4l12 10v14H4z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M11 28v-8l5-4 5 4v8" fill="currentColor" opacity=".55"/></svg>NAMMASPACE <span class="brand-tag">Indoor Digital Twins</span></div>
+  <div class="t-main" id="scene-title">3D Reconstruction &amp; Roaming</div>
+  <div class="t-sub"><span id="scene-badge" class="badge">—</span> <span id="scene-sub" class="muted"></span></div>
+</header>
+
+<div id="hint" class="hint"></div>
+
+<div id="layers" hidden>
+  <div class="seg" role="group" aria-label="Reconstruction stage">
+    <button data-layer="sparse" title="Sparse Structure-from-Motion points + camera poses">Sparse</button>
+    <button data-layer="dense" title="Dense Multi-View-Stereo point cloud">Dense</button>
+    <button data-layer="mesh" title="Untextured surface mesh">Mesh</button>
+    <button data-layer="textured" class="on" title="Final textured mesh">Textured</button>
+  </div>
+  <div id="layer-label">Textured mesh · final digital twin</div>
+</div>
+
+<div id="minimap" hidden><span>MAP</span></div>
+
+<div id="hud" hidden aria-hidden="true">
+  <div class="kb">
+    <span data-k="KeyQ">Q</span><span data-k="KeyW">W</span><span data-k="KeyE">E</span>
+    <span data-k="KeyA">A</span><span data-k="KeyS">S</span><span data-k="KeyD">D</span>
+    <span data-k="Shift" class="wide">Shift</span>
+  </div>
+  <svg class="mouse" viewBox="0 0 40 60"><rect x="2" y="2" width="36" height="56" rx="18" class="body"/><path d="M2 22h36M20 2v20" class="seam"/><path d="M20 2v20H2v-2A18 18 0 0 1 20 2z" class="lb"/><path d="M20 2v20h18v-2A18 18 0 0 0 20 2z" class="rb"/><rect x="17" y="8" width="6" height="10" rx="3" class="wh"/></svg>
+</div>
+
+<nav id="toolbar" aria-label="Viewer controls">
+  <div class="seg" role="group" aria-label="Navigation mode">
+    <button data-mode="orbit" class="on" title="Explore: orbit / zoom / pan (1)">Explore</button>
+    <button data-mode="walk" title="Walk: first-person roaming (2)">Walk</button>
+    <button data-mode="tour" title="Tour: replay the capture path (3)">Tour</button>
+  </div>
+  <button id="btn-reset" title="Reset view (R)">Reset</button>
+  <button id="btn-splat" class="tog" title="Photoreal Gaussian-splat rendering (V)" hidden>Photoreal</button>
+  <button id="btn-cut" class="tog on" title="Cut away ceiling in Explore mode (C)">Cutaway</button>
+  <button id="btn-path" class="tog" title="Show capture camera path (P)">Camera path</button>
+  <button id="btn-info" title="About this reconstruction (I)">About</button>
+  <button id="btn-full" class="tog" title="Fullscreen (F)">⛶ Fullscreen</button>
+</nav>
+
+<div id="tourbar" hidden>
+  <button id="tour-play">❚❚</button>
+  <input id="tour-seek" type="range" min="0" max="1000" value="0" aria-label="Tour position">
+  <select id="tour-speed" aria-label="Tour speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+</div>
+
+<div id="joy" hidden><div id="joy-knob"></div></div>
+<div id="updown" hidden><button id="btn-up">▲</button><button id="btn-down">▼</button></div>
+
+<aside id="info" hidden>
+  <button id="info-close" aria-label="Close">×</button>
+  <h2>About this reconstruction</h2>
+  <p id="info-provenance"></p>
+  <table id="stats"></table>
+  <h3>Pipeline (open-source, CPU-only)</h3>
+  <ol class="pipe" id="pipe-list">
+    <li><b>Capture</b> – one ordinary handheld smartphone video (no LiDAR, depth sensor or IMU data used).</li>
+    <li><b>Frame selection</b> – ffmpeg <code>blurdetect</code>; sharpest frame per window kept.</li>
+    <li><b>Structure-from-Motion</b> – COLMAP 4.2: SIFT features, sequential + loop-closure matching, incremental mapping → camera poses + sparse cloud.</li>
+    <li><b>Gravity alignment</b> – COLMAP orientation aligner (upright-camera prior).</li>
+    <li><b>Multi-View Stereo</b> – OpenMVS 2.4: depth-map estimation &amp; fusion → dense point cloud.</li>
+    <li><b>Surface + texture</b> – OpenMVS Delaunay/graph-cut meshing, view-selected texture atlas → GLB.</li>
+    <li><b>Web delivery</b> – glTF-Transform (meshopt geometry, WebP textures) → three.js viewer with BVH-accelerated collision.</li>
+  </ol>
+  <h3>Controls</h3>
+  <ul class="keys">
+    <li><b>Explore</b>: drag = orbit · right-drag / two-finger = pan · wheel / pinch = zoom · double-click = focus point</li>
+    <li><b>Walk</b>: drag = look · W A S D / arrows / joystick = move · Shift = run · Q / E = down / up · wheel / pinch = zoom · double-click floor = step there</li>
+    <li><b>Tour</b>: replays the real camera trajectory recovered by SfM</li>
+    <li><b>R</b> reset · <b>1/2/3</b> modes · <b>C</b> cutaway · <b>P</b> path · <b>M</b> minimap · <b>K</b> input overlay · <b>F</b> fullscreen</li>
+  </ul>
+  <h3>Scenes</h3>
+  <ul id="scene-list"></ul>
+  <p class="muted">Scale is approximate: derived from an assumed camera height above the floor.</p>
+</aside>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

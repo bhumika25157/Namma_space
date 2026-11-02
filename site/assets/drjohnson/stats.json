@@ -1,0 +1,12 @@
+{
+ "frames_used": 263,
+ "registered_images": 263,
+ "sparse_points": 80861,
+ "mean_reproj_error_px": 0.562542,
+ "glb_bytes": 15584848,
+ "dense_ply_bytes": 141336800,
+ "pipeline_minutes": 34,
+ "poses": "dataset (COLMAP)",
+ "date": "2026-11-02",
+ "dense_points": 2143320
+}

@@ -1,0 +1,8 @@
+node_modules/
+tools/
+datasets/
+work/
+video/out/*.mp4
+video/chk/
+*.zip
+NammaSpace_Round1_Demo*.mp4

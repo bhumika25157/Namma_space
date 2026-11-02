@@ -1,0 +1,2 @@
+{ "dense": "2.14 M", "tris": "1.24 M", "glb": "15.6 MB",
+  "foot": "Measured on this run: depth maps + fusion 21 min · meshing 4 min · texturing 7 min · <b style=\"color:#eef1f7\">~34 min total on a laptop CPU</b> (AMD Ryzen 7 7730U, no CUDA)" }

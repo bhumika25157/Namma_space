@@ -1,0 +1,188 @@
+{
+ "intro": {
+  "name": "intro",
+  "T": 30.788,
+  "sents": [
+   {
+    "start": 0.8,
+    "dur": 8.688,
+    "text": "Welcome to NammaSpace: a pipeline that turns ordinary photographs of an indoor space into an explorable 3D digital twin.",
+    "file": "audio/intro_0.mp3"
+   },
+   {
+    "start": 10.588000000000001,
+    "dur": 10.872,
+    "text": "A digital twin is a faithful, measurable 3D copy of a real place. Anyone can open it and walk through it in a web browser, with no headset and no app to install.",
+    "file": "audio/intro_1.mp3"
+   },
+   {
+    "start": 22.560000000000002,
+    "dur": 6.528,
+    "text": "In this Round One prototype, we reconstruct a real indoor environment, and explore it freely on the web.",
+    "file": "audio/intro_2.mp3"
+   }
+  ]
+ },
+ "outro": {
+  "name": "outro",
+  "T": 35.452,
+  "sents": [
+   {
+    "start": 0.6,
+    "dur": 13.344,
+    "text": "To summarise: COLMAP camera poses, OpenMVS dense reconstruction and meshing, compressed glTF, and a three.js viewer with first-person free roaming. All open source, and all running in the browser.",
+    "file": "audio/outro_0.mp3"
+   },
+   {
+    "start": 15.244,
+    "dur": 11.928,
+    "text": "Next, we will capture our own spaces with a smartphone using the same pipeline, and add semantic labels, measurements and indoor navigation, turning digital twins into spatial intelligence.",
+    "file": "audio/outro_1.mp3"
+   },
+   {
+    "start": 28.872,
+    "dur": 2.28,
+    "text": "This was NammaSpace. Thank you.",
+    "file": "audio/outro_2.mp3"
+   }
+  ]
+ },
+ "data": {
+  "name": "data",
+  "T": 52.868,
+  "sents": [
+   {
+    "start": 0.6,
+    "dur": 11.256,
+    "text": "For this prototype we use a public research dataset, not our own capture: the Dr Johnson scene from Deep Blending, published by Hedman and colleagues at SIGGRAPH Asia 2018.",
+    "file": "audio/data_0.mp3"
+   },
+   {
+    "start": 12.756,
+    "dur": 10.824,
+    "text": "It contains two hundred and sixty-three overlapping photographs of a historic house interior, with COLMAP camera poses, as distributed with the 3D Gaussian Splatting benchmark.",
+    "file": "audio/data_1.mp3"
+   },
+   {
+    "start": 25.479999999999997,
+    "dur": 12.792,
+    "text": "Our pipeline is fully open source, and ran on a laptop CPU. OpenMVS estimates a depth map for every photograph, and fuses them into a dense point cloud of 2.1 million points.",
+    "file": "audio/data_2.mp3"
+   },
+   {
+    "start": 39.372,
+    "dur": 8.496,
+    "text": "A Delaunay graph-cut step turns those points into a surface mesh, which is textured from the original photographs, and compressed for the web.",
+    "file": "audio/data_3.mp3"
+   }
+  ]
+ },
+ "stages": {
+  "name": "stages",
+  "T": 29.336,
+  "sents": [
+   {
+    "start": 1.2,
+    "dur": 8.4,
+    "text": "These are the real intermediate results, inside our viewer. First, the sparse structure-from-motion points, with every camera position.",
+    "file": "audio/stages_0.mp3"
+   },
+   {
+    "start": 12.3,
+    "dur": 3.264,
+    "text": "Next, the dense multi-view stereo point cloud.",
+    "file": "audio/stages_1.mp3"
+   },
+   {
+    "start": 18.464,
+    "dur": 2.736,
+    "text": "Then, the reconstructed surface mesh.",
+    "file": "audio/stages_2.mp3"
+   },
+   {
+    "start": 24.099999999999998,
+    "dur": 2.736,
+    "text": "And finally, the textured digital twin.",
+    "file": "audio/stages_3.mp3"
+   }
+  ]
+ },
+ "viewer": {
+  "name": "viewer",
+  "T": 57.136,
+  "sents": [
+   {
+    "start": 1,
+    "dur": 9.6,
+    "text": "This is the NammaSpace web viewer, built with three.js. In Explore mode, dragging the mouse orbits around the entire reconstruction.",
+    "file": "audio/viewer_0.mp3"
+   },
+   {
+    "start": 14.6,
+    "dur": 5.232,
+    "text": "The ceiling is cut away automatically, so the layout of the house reads like a floor plan.",
+    "file": "audio/viewer_1.mp3"
+   },
+   {
+    "start": 22.832,
+    "dur": 7.92,
+    "text": "Scrolling the mouse wheel zooms in, so we can inspect details: the paintings, the furniture, and the doorways between rooms.",
+    "file": "audio/viewer_2.mp3"
+   },
+   {
+    "start": 36.252,
+    "dur": 4.872,
+    "text": "Double-clicking any surface flies the camera to it, and right-dragging pans the view.",
+    "file": "audio/viewer_3.mp3"
+   },
+   {
+    "start": 44.624,
+    "dur": 7.512,
+    "text": "The About panel lists the data source and the real statistics of this reconstruction run. And the viewer can switch to fullscreen.",
+    "file": "audio/viewer_4.mp3"
+   }
+  ]
+ },
+ "walk": {
+  "name": "walk",
+  "T": 73.188,
+  "sents": [
+   {
+    "start": 0.8,
+    "dur": 6.816,
+    "text": "Now for the most important part: free roaming. Switching to Walk mode places us inside the house, at eye height.",
+    "file": "audio/walk_0.mp3"
+   },
+   {
+    "start": 10.616,
+    "dur": 10.008,
+    "text": "W, A, S and D move, and dragging the mouse looks around, just like a first-person game. The overlay in the corner shows the keys being pressed.",
+    "file": "audio/walk_1.mp3"
+   },
+   {
+    "start": 24.624,
+    "dur": 9.264,
+    "text": "Movement is collision-aware. A BVH-accelerated raycast against the mesh stops us from walking through walls, and lets us slide along them instead.",
+    "file": "audio/walk_2.mp3"
+   },
+   {
+    "start": 37.388,
+    "dur": 4.512,
+    "text": "The minimap shows our live position and heading on the reconstructed floor plan.",
+    "file": "audio/walk_3.mp3"
+   },
+   {
+    "start": 46.4,
+    "dur": 7.656,
+    "text": "We can walk out of one room, through the doorway, and into the next. Every surface we see was reconstructed from the photographs.",
+    "file": "audio/walk_4.mp3"
+   },
+   {
+    "start": 58.556,
+    "dur": 7.632,
+    "text": "Holding Shift moves faster, and Tour mode replays the original camera trajectory, recovered by structure from motion.",
+    "file": "audio/walk_5.mp3"
+   }
+  ]
+ }
+}

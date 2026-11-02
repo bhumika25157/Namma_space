@@ -1,0 +1,10 @@
+{
+ "frames_used": 136,
+ "registered_images": 95,
+ "sparse_points": 2361,
+ "mean_reproj_error_px": 0.87415,
+ "glb_bytes": 1821012,
+ "dense_ply_bytes": 28718338,
+ "pipeline_minutes": 16.9,
+ "date": "2026-11-02"
+}

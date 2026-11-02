@@ -1,0 +1,42 @@
+{
+  "voice": "en-US-AndrewNeural",
+  "segments": {
+    "intro": [
+      "Welcome to NammaSpace: a pipeline that turns ordinary photographs of an indoor space into an explorable 3D digital twin.",
+      "A digital twin is a faithful, measurable 3D copy of a real place. Anyone can open it and walk through it in a web browser, with no headset and no app to install.",
+      "In this Round One prototype, we reconstruct a real indoor environment, and explore it freely on the web."
+    ],
+    "data": [
+      "For this prototype we use a public research dataset, not our own capture: the Dr Johnson scene from Deep Blending, published by Hedman and colleagues at SIGGRAPH Asia 2018.",
+      "It contains two hundred and sixty-three overlapping photographs of a historic house interior, with COLMAP camera poses, as distributed with the 3D Gaussian Splatting benchmark.",
+      "Our pipeline is fully open source, and ran on a laptop CPU. OpenMVS estimates a depth map for every photograph, and fuses them into a dense point cloud of {DENSE_M} million points.",
+      "A Delaunay graph-cut step turns those points into a surface mesh, which is textured from the original photographs, and compressed for the web."
+    ],
+    "stages": [
+      "These are the real intermediate results, inside our viewer. First, the sparse structure-from-motion points, with every camera position.",
+      "Next, the dense multi-view stereo point cloud.",
+      "Then, the reconstructed surface mesh.",
+      "And finally, the textured digital twin."
+    ],
+    "viewer": [
+      "This is the NammaSpace web viewer, built with three.js. In Explore mode, dragging the mouse orbits around the entire reconstruction.",
+      "The ceiling is cut away automatically, so the layout of the house reads like a floor plan.",
+      "Scrolling the mouse wheel zooms in, so we can inspect details: the paintings, the furniture, and the doorways between rooms.",
+      "Double-clicking any surface flies the camera to it, and right-dragging pans the view.",
+      "The About panel lists the data source and the real statistics of this reconstruction run. And the viewer can switch to fullscreen."
+    ],
+    "walk": [
+      "Now for the most important part: free roaming. Switching to Walk mode places us inside the house, at eye height.",
+      "W, A, S and D move, and dragging the mouse looks around, just like a first-person game. The overlay in the corner shows the keys being pressed.",
+      "Movement is collision-aware. A BVH-accelerated raycast against the mesh stops us from walking through walls, and lets us slide along them instead.",
+      "The minimap shows our live position and heading on the reconstructed floor plan.",
+      "We can walk out of one room, through the doorway, and into the next. Every surface we see was reconstructed from the photographs.",
+      "Holding Shift moves faster, and Tour mode replays the original camera trajectory, recovered by structure from motion."
+    ],
+    "outro": [
+      "To summarise: COLMAP camera poses, OpenMVS dense reconstruction and meshing, compressed glTF, and a three.js viewer with first-person free roaming. All open source, and all running in the browser.",
+      "Next, we will capture our own spaces with a smartphone using the same pipeline, and add semantic labels, measurements and indoor navigation, turning digital twins into spatial intelligence.",
+      "This was NammaSpace. Thank you."
+    ]
+  }
+}
