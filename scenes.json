@@ -1,0 +1,31 @@
+{
+  "scenes": [
+    {
+      "id": "drjohnson",
+      "kind": "dataset",
+      "title": "Dr Johnson house: public dataset prototype",
+      "subtitle": "263 photographs · Deep Blending (Hedman et al. 2018) · reconstructed by the NammaSpace pipeline",
+      "provenance": "Prototype built on a PUBLIC RESEARCH DATASET, not our own capture: the Dr Johnson scene from Deep Blending (Hedman et al., SIGGRAPH Asia 2018), 263 photographs of a historic house interior, with COLMAP camera poses as distributed with the 3D Gaussian Splatting release (Kerbl et al., 2023). Dense reconstruction, meshing, texturing and web export were run by us with the open-source pipeline below. Areas no photograph saw, and plain textureless surfaces, can be missing or noisy.",
+      "dir": "assets/drjohnson/",
+      "splat": false,
+      "stages": true,
+      "captureHeight": 1.5,
+      "pipeline": [
+        "<b>Input</b> – 263 photographs with COLMAP camera poses (Deep Blending, Dr Johnson; poses from the 3DGS release). Public dataset, not our own capture.",
+        "<b>Multi-View Stereo</b> – OpenMVS 2.4 PatchMatch: one depth map per photograph (quarter resolution), fused into a dense point cloud.",
+        "<b>Surface</b> – Delaunay tetrahedralisation + graph-cut surface extraction → 2.48 M-face mesh.",
+        "<b>Texture</b> – view-selected texture atlas from the full-resolution photographs (mesh decimated to 1.24 M faces) → GLB.",
+        "<b>Web delivery</b> – meshopt geometry + JPEG textures → three.js viewer: orbit, first-person walk with BVH collision, minimap, stage layers."
+      ]
+    },
+    {
+      "id": "computer-lab",
+      "kind": "real",
+      "title": "Computer Lab — real smartphone capture",
+      "subtitle": "9.6 s handheld phone video · 95 of 136 frames registered · fully automatic",
+      "provenance": "Reconstructed automatically from a single 9.6-second handheld smartphone video (1024×576, WhatsApp-compressed) recorded on 2 Nov 2026. No manual modelling or editing: every surface comes from photogrammetry. The clip mostly pans from one standing position, so surfaces facing the camera (desk rows, notice board, whiteboard, far wall) are reconstructed while areas never seen by the phone are missing.",
+      "dir": "assets/computer-lab/",
+      "splat": false
+    }
+  ]
+}
